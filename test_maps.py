@@ -17,9 +17,9 @@ def _run_players(g, steps=200) -> None:
     g.play(steps)
 
 
-def test_available_maps_contains_all_three():
+def test_available_maps_contains_all_four():
     maps = available_maps()
-    for key in ("taiwan", "world", "gpa"):
+    for key in ("classic", "taiwan", "world", "gpa"):
         assert key in maps
 
 
@@ -71,13 +71,43 @@ def test_each_map_has_all_required_categories():
 
 
 def test_board_from_build_maps_matches_tile_names():
-    """The three maps keep their distinct themed tile names."""
+    """The maps keep their distinct themed tile names."""
+    classic = build_map(by_key("classic"))
+    assert classic.tile_by_index(0).name == "起点"
     taiwan = build_map(by_key("taiwan"))
     assert taiwan.tile_by_index(0).name == "起点"
     world = build_map(by_key("world"))
     assert world.tile_by_index(0).name == "机场"
     gpa = build_map(by_key("gpa"))
     assert gpa.tile_by_index(0).name == "入学点"
+
+
+def test_classic_map_is_standard_monopoly_layout():
+    """The classic map mirrors the standard 40-tile Monopoly board."""
+    b = build_map(by_key("classic"))
+    assert len(b.tiles) == 40
+    # 8 个地产集团，每组 2-3 块
+    groups: dict = {}
+    for t in b.tiles:
+        if t.category == TileType.PROPERTY:
+            groups.setdefault(t.group, []).append(t)
+    assert set(groups) == {"brown", "lightblue", "pink", "orange", "red", "yellow", "green", "darkblue"}
+    assert all(2 <= len(v) <= 3 for v in groups.values())
+    # 铁路 4 / 公用事业 2 / 机会 3 / 社区 3 / 税 2
+    assert sum(1 for t in b.tiles if t.category == TileType.RAILROAD) == 4
+    assert sum(1 for t in b.tiles if t.category == TileType.UTILITY) == 2
+    assert sum(1 for t in b.tiles if t.category == TileType.CHANCE) == 3
+    assert sum(1 for t in b.tiles if t.category == TileType.COMMUNITY) == 3
+    assert sum(1 for t in b.tiles if t.category == TileType.TAX) == 2
+    # 四个角落
+    assert b.tiles[0].category == TileType.GO
+    assert b.tiles[10].category == TileType.JAIL
+    assert b.tiles[20].category == TileType.FREE
+    assert b.tiles[30].category == TileType.GO_JAIL
+    # 标志性地名
+    assert b.tiles[1].name == "地中海大道"
+    assert b.tiles[37].name == "公园广场"
+    assert b.tiles[39].name == "木板路"
 
 
 def test_board_from_map_is_valid_for_engine():

@@ -3,8 +3,9 @@
 A *map* is a named layout of tiles mirrored from ``game.game.Game``.
 The UI menu switches maps at runtime via :data:`MAPS` / :func:`by_key`.
 
-Maps ship in three flavours (the three referenced games):
+Maps ship in four flavours:
 
+* ``classic`` – the standard Monopoly board (地中海/波罗的海 … 木板路).
 * ``taiwan`` – Taiwan-city map (the original layout).
 * ``world``  – world-landmarks map.
 * ``gpa``    – a lightweight "GPA / campus" map for variety.
@@ -21,6 +22,51 @@ from typing import Dict, List, Tuple
 
 def _tile(name: str, category: str, group: str, price: int) -> Tuple[str, str, str, int]:
     return (name, category, group, price)
+
+
+# ---------------------------------------------------------- map: classic (standard Monopoly)
+CLASSIC_TILES: List[Tuple[str, str, str, int]] = [
+    _tile("起点", "GO", "", 0),                       # 0
+    _tile("地中海大道", "PROPERTY", "brown", 1500),    # 1
+    _tile("社区福利", "COMMUNITY", "", 0),             # 2
+    _tile("波罗的海大道", "PROPERTY", "brown", 2000),   # 3
+    _tile("所得税", "TAX", "", 800),                   # 4
+    _tile("雷丁铁路", "RAILROAD", "railroad", 2000),   # 5
+    _tile("东方大道", "PROPERTY", "lightblue", 1500),  # 6
+    _tile("机会", "CHANCE", "", 0),                    # 7
+    _tile("佛蒙特大道", "PROPERTY", "lightblue", 2000), # 8
+    _tile("康涅狄格大道", "PROPERTY", "lightblue", 2500), # 9
+    _tile("监狱", "JAIL", "", 0),                      # 10
+    _tile("圣查尔斯广场", "PROPERTY", "pink", 3000),    # 11
+    _tile("电力公司", "UTILITY", "utility", 1500),     # 12
+    _tile("州大道", "PROPERTY", "pink", 3500),         # 13
+    _tile("弗吉尼亚大道", "PROPERTY", "pink", 4000),    # 14
+    _tile("宾夕法尼亚铁路", "RAILROAD", "railroad", 2000), # 15
+    _tile("圣詹姆斯广场", "PROPERTY", "orange", 5000),   # 16
+    _tile("社区福利", "COMMUNITY", "", 0),             # 17
+    _tile("田纳西大道", "PROPERTY", "orange", 5500),   # 18
+    _tile("纽约大道", "PROPERTY", "orange", 6000),     # 19
+    _tile("免费停车", "FREE", "", 0),                  # 20
+    _tile("肯塔基大道", "PROPERTY", "red", 7000),      # 21
+    _tile("机会", "CHANCE", "", 0),                    # 22
+    _tile("印第安纳大道", "PROPERTY", "red", 7500),    # 23
+    _tile("伊利诺伊大道", "PROPERTY", "red", 8000),    # 24
+    _tile("B&O铁路", "RAILROAD", "railroad", 2000),   # 25
+    _tile("大西洋大道", "PROPERTY", "yellow", 9000),   # 26
+    _tile("文特诺大道", "PROPERTY", "yellow", 9500),   # 27
+    _tile("自来水公司", "UTILITY", "utility", 2000),    # 28
+    _tile("马文花园", "PROPERTY", "yellow", 10000),    # 29
+    _tile("前往监狱", "GO_JAIL", "", 0),               # 30
+    _tile("太平洋大道", "PROPERTY", "green", 11000),   # 31
+    _tile("北卡罗来纳大道", "PROPERTY", "green", 11500), # 32
+    _tile("社区福利", "COMMUNITY", "", 0),             # 33
+    _tile("宾夕法尼亚大道", "PROPERTY", "green", 12000), # 34
+    _tile("短途铁路", "RAILROAD", "railroad", 2000),   # 35
+    _tile("机会", "CHANCE", "", 0),                    # 36
+    _tile("公园广场", "PROPERTY", "darkblue", 15000),  # 37
+    _tile("奢侈税", "TAX", "", 1200),                  # 38
+    _tile("木板路", "PROPERTY", "darkblue", 20000),    # 39
+]
 
 
 # ---------------------------------------------------------- map: taiwan (default)
@@ -159,6 +205,7 @@ GPA_TILES: List[Tuple[str, str, str, int]] = [
 
 
 _MAPS = {
+    "classic": {"name": "经典·大富翁地图", "tiles": CLASSIC_TILES},
     "taiwan": {"name": "台湾·城市地图", "tiles": TAIWAN_TILES},
     "world": {"name": "世界·地标地图", "tiles": WORLD_TILES},
     "gpa": {"name": "校园·G绩点地图", "tiles": GPA_TILES},
