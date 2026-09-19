@@ -17,9 +17,9 @@ def _run_players(g, steps=200) -> None:
     g.play(steps)
 
 
-def test_available_maps_contains_all_four():
+def test_available_maps_contains_all_five():
     maps = available_maps()
-    for key in ("classic", "taiwan", "world", "gpa"):
+    for key in ("classic", "hongkong", "taiwan", "world", "gpa"):
         assert key in maps
 
 
@@ -74,6 +74,9 @@ def test_board_from_build_maps_matches_tile_names():
     """The maps keep their distinct themed tile names."""
     classic = build_map(by_key("classic"))
     assert classic.tile_by_index(0).name == "起点"
+    hongkong = build_map(by_key("hongkong"))
+    assert hongkong.tile_by_index(1).name == "深水埗"
+    assert hongkong.tile_by_index(39).name == "太平山"
     taiwan = build_map(by_key("taiwan"))
     assert taiwan.tile_by_index(0).name == "起点"
     world = build_map(by_key("world"))
